@@ -10,8 +10,8 @@ BOARD = """\n\n        TIC_TAC_TOE\n\n
          \n                                 
      _{g}_   _{h}_   _{i}_                    X = You\
 \n                                        O = Machine 
-     
-     \n\n             """
+\n                                                
+     \n                                       [q to quit]\n             """
 
 
 DEFAULT_LAYOUT = { 'a': '_', 'b':'_', 'c':'_', 'd':'_', 'e':'_', 'f':'_', 'g':'_', 'h':'_', 'i':'_' }
