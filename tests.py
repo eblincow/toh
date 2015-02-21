@@ -45,5 +45,32 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(set(decode_board_state(complex1)[1]),set(['3','4']))
 
 
+
+    def test_check_overlap(self):
+        non_winning_combinations = [['1','2','5'],['1','3','9'],['1','1','1'],['0','22','33'],['-1','-2','3'],['4','5'],['5','6','1']]
+        winning_combinations = [['1','2','3'],['1','5','9'],['8','5','2']]
+        for non_winner in non_winning_combinations:
+            self.assertFalse(check_overlap(non_winner)[0], "check_overlap should return False for non winners")
+            self.assertTrue(type(check_overlap(non_winner)[1]==list),"check_overlap should return list of overlap as second item")
+            
+        self.assertTrue(len(check_overlap(['1','2','5'])[1])>0,"the returned list shouldnt be empty")
+
+        for winner in winning_combinations:
+            self.assertTrue(check_overlap(winner)[0])
+            self.assertTrue(type(check_overlap(winner)[1]==list))
+            self.assertTrue(len(check_overlap(winner)[1])==3,"winning check_overlaps should have 3 digits")
+
+
+    def test_check_win(self):
+        pass
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     unittest.main()
