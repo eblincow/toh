@@ -7,6 +7,7 @@ import unittest
 start = {'a':'X','b':'O','c':'X'}
 Xwin = {'a':'X','b':'X','c':'X'}
 Owin = {'a':'O','b':'O','c':'O'}
+complex1 = {'a':'X','b':'X','c':'O','d':'O','e':'X'}
 
 
 
@@ -29,6 +30,19 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(decode_move("text"),{})
         self.assertEqual(decode_move("15"),{})
 
+    def test_decode_board_state(self):
+        # returns Xs, Os
+        self.assertEqual(decode_board_state(start)[0],['1','3'])
+        self.assertEqual(decode_board_state(start)[1],['2'])
+
+        self.assertEqual(set(decode_board_state(Xwin)[0]),set(['1','2','3']))
+        self.assertEqual(decode_board_state(Xwin)[1],[])
+
+        self.assertEqual(set(decode_board_state(Owin)[0]),set([]))
+        self.assertEqual(set(decode_board_state(Owin)[1]),set(['1','2','3']))
+
+        self.assertEqual(set(decode_board_state(complex1)[0]),set(['1','2','5']))
+        self.assertEqual(set(decode_board_state(complex1)[1]),set(['3','4']))
 
 
 if __name__ == '__main__':
