@@ -30,19 +30,19 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(decode_move("text"),{})
         self.assertEqual(decode_move("15"),{})
 
-    def test_decode_board_state(self):
-        # returns Xs, Os
-        self.assertEqual(decode_board_state(start)[0],['1','3'])
-        self.assertEqual(decode_board_state(start)[1],['2'])
+    def test_Xs_and_Os(self):
+        # test the functions Xs and Os
+        self.assertEqual(Xs(start),['1','3'])
+        self.assertEqual(Os(start),['2'])
 
-        self.assertEqual(set(decode_board_state(Xwin)[0]),set(['1','2','3']))
-        self.assertEqual(decode_board_state(Xwin)[1],[])
+        self.assertEqual(set(Xs(Xwin)),set(['1','2','3']))
+        self.assertEqual(Os(Xwin),[])
 
-        self.assertEqual(set(decode_board_state(Owin)[0]),set([]))
-        self.assertEqual(set(decode_board_state(Owin)[1]),set(['1','2','3']))
+        self.assertEqual(set(Xs(Owin)),set([]))
+        self.assertEqual(set(Os(Owin)),set(['1','2','3']))
 
-        self.assertEqual(set(decode_board_state(complex1)[0]),set(['1','2','5']))
-        self.assertEqual(set(decode_board_state(complex1)[1]),set(['3','4']))
+        self.assertEqual(set(Xs(complex1)),set(['1','2','5']))
+        self.assertEqual(set(Os(complex1)),set(['3','4']))
 
 
 

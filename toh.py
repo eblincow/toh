@@ -1,30 +1,72 @@
+# main game file with core while loop
 
-from board import print_board
-from get_move import decode_move, decode_board_state, check_win
-# while loop with raw_input and main logic
+import sys, os
+from board import print_board # prints board
+from get_move import decode_move, Xs,Os # gets move, analyzes board
+from game import Game # remembers game state
+from getch import getch # used for immediate keyboard input(no enter key)
+import datetime
+
+COMPUTER_START = True
 
 
-COMPUTER_START = False
+def main():
+     
+    game = Game() # Basically just a container for the game state vars
+    os.system('clear')
 
-BOARD_STATE = {}
-
-WIN_STATE = False
-X_WIN_STATE = False
-O_WIN_STATE = False
-
-print_board()
-
-while WIN_STATE == False:
-    move = decode_move(raw_input())
-    BOARD_STATE.update(move)
-    print_board(BOARD_STATE) 
-    #our_move = generate_move(BOARD_STATE.copy())
-    #BOARD_STATE.update(our_move)
+    # Main loop 
+    while game.WIN_STATE == False:
+        print_board(game.BOARD_STATE) 
+        
+        if COMPUTER_START:
+            Xs_move(game)
+            Os_move(game)        
+        elif not COMPUTER_START:
+            Os_move(game)
+            Xs_move(game)
+        
     
-    decoded_board_state = decode_board_state(BOARD_STATE) 
-    print("decoded_board_state = " + repr(decoded_board_state))
-    X_WIN_STATE, overlap = check_win(decoded_board_state[0]) 
-    O_WIN_STATE, overlap = check_win(decoded_board_state[1])
-    print("X_WIN_STATE: " + repr(X_WIN_STATE))
-    print("O_WIN_STATE: " + repr(O_WIN_STATE))
-    WIN_STATE = X_WIN_STATE or O_WIN_STATE
+    
+    
+    
+    print(game.WINNER + " won!")
+    print("Do you want to play again? y/n\n")
+    char = getch() 
+    if char.lower()=='y':
+        main()
+    elif char.lower()=='n':
+        sys.exit(0)
+
+
+
+
+
+def Xs_move(game):
+    move = decode_move(getch())
+    game.BOARD_STATE.update(move)
+    print_board(game.BOARD_STATE)
+    # get Xs
+    xs_list = Xs(game.BOARD_STATE) 
+    game.check_win(xs_list)
+  
+
+def Os_move(game):
+    #our_move = generate_move(game.BOARD_STATE.copy())
+    #BOARD_STATE.update(our_move)
+    # sleep?
+    print_board(game.BOARD_STATE)        
+    os_list = Os(game.BOARD_STATE) 
+    print("Os just went! (cant show it yet)!" + str(datetime.datetime.now().microsecond))
+
+
+
+
+main()
+
+
+
+
+
+
+
