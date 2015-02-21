@@ -1,34 +1,31 @@
 import os
 
-INTRO = "Welcome to toh \n an unbeatable tic-tac-toh game.\n"
+PROMPT = "\nEnter a square: "
 
-FIRST = "Press a number 1 to 9 to select the square of your choice.\n"
-
-BOARD = """\n\nTIC_TAC_TOE\n\n
+BOARD = """\n\n        TIC_TAC_TOE\n\n
 
      _{a}_   _{b}_   _{c}_                    | 1 2 3 |\
      \n                                        | 4 5 6 |  
      _{d}_   _{e}_   _{f}_                    | 7 8 9 |\
          \n                                 
-     _{g}_   _{h}_   _{i}_                    X = You, O = Machine 
+     _{g}_   _{h}_   _{i}_                    X = You\
+\n                                        O = Machine 
      
      \n\n             """
 
 
 DEFAULT_LAYOUT = { 'a': '_', 'b':'_', 'c':'_', 'd':'_', 'e':'_', 'f':'_', 'g':'_', 'h':'_', 'i':'_' }
 
-# clear the terminal somehow
-#os.clear()
-
-
-
-def print_board(board_dict=DEFAULT_LAYOUT):
+def print_board(board_dict=DEFAULT_LAYOUT.copy()):
+    new_board = DEFAULT_LAYOUT.copy()
+    new_board.update(board_dict)
     os.system('clear')
-    print(BOARD.format(**board_dict))
+    board = BOARD.format(**new_board)
+    print(board)
+    print(PROMPT)
+    return new_board
 
 
-print_board()
 
-print_board()
 
 
