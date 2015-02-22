@@ -1,6 +1,8 @@
 
 from board import *
 from get_move import *
+from decision_move import *
+from game import *
 import unittest
 
 
@@ -31,18 +33,26 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(decode_move("15"),{})
 
     def test_Xs_and_Os(self):
+
         # test the functions Xs and Os
-        self.assertEqual(Xs(start),['1','3'])
-        self.assertEqual(Os(start),['2'])
+        game1 = Game()
+        game1.BOARD_STATE = start
+        self.assertEqual(set(game1.get_Xs()),set(['1','3']))
+        self.assertEqual(set(game1.get_Os()),set(['2']))
 
-        self.assertEqual(set(Xs(Xwin)),set(['1','2','3']))
-        self.assertEqual(Os(Xwin),[])
+        game2 = Game()
+        game2.BOARD_STATE = Xwin
+        self.assertEqual(set(game2.get_Xs()),set(['1','2','3']))
 
-        self.assertEqual(set(Xs(Owin)),set([]))
-        self.assertEqual(set(Os(Owin)),set(['1','2','3']))
+        game3 = Game()
+        game3.BOARD_STATE = Owin
+        self.assertEqual(game3.get_Xs(),[])
+        self.assertEqual(set(game3.get_Os()),set(['1','2','3']))
 
-        self.assertEqual(set(Xs(complex1)),set(['1','2','5']))
-        self.assertEqual(set(Os(complex1)),set(['3','4']))
+        game4 = Game()
+        game4.BOARD_STATE = complex1
+        self.assertEqual(set(game4.get_Xs()),set(['1','2','5']))
+        self.assertEqual(set(game4.get_Os()),set(['3','4']))
 
 
 
@@ -50,22 +60,19 @@ class TestBoard(unittest.TestCase):
         non_winning_combinations = [['1','2','5'],['1','3','9'],['1','1','1'],['0','22','33'],['-1','-2','3'],['4','5'],['5','6','1']]
         winning_combinations = [['1','2','3'],['1','5','9'],['8','5','2']]
         for non_winner in non_winning_combinations:
-            self.assertFalse(check_overlap(non_winner)[0], "check_overlap should return False for non winners")
-            self.assertTrue(type(check_overlap(non_winner)[1]==list),"check_overlap should return list of overlap as second item")
+            self.assertFalse(check_overlap(non_winner), "check_overlap should return False for non winners")
             
-        self.assertTrue(len(check_overlap(['1','2','5'])[1])>0,"the returned list shouldnt be empty")
-
         for winner in winning_combinations:
-            self.assertTrue(check_overlap(winner)[0])
-            self.assertTrue(type(check_overlap(winner)[1]==list))
-            self.assertTrue(len(check_overlap(winner)[1])==3,"winning check_overlaps should have 3 digits")
+            self.assertTrue(check_overlap(winner))
+            self.assertTrue(type(check_overlap(winner)==list))
 
 
     def test_check_win(self):
         pass
 
-
-
+    def test_find_almost_matches(self):
+        self.assertEqual(find_almost_matches(['1','2']),[[1,2]])
+        self.assertEqual(find_almost_matches(['1']),[])
 
 
 

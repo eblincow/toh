@@ -19,7 +19,8 @@ DEFAULT_LAYOUT = { 'a': '_', 'b':'_', 'c':'_', 'd':'_', 'e':'_', 'f':'_', 'g':'_
 def print_board(board_dict=DEFAULT_LAYOUT.copy()):
     new_board = DEFAULT_LAYOUT.copy()
     new_board.update(board_dict)
-    os.system('clear')
+    # uncomment
+    #os.system('clear')
     board = BOARD.format(**new_board)
     print(board)
     print(PROMPT)
