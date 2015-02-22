@@ -54,12 +54,13 @@ def Xs_move(game):
 def Os_move(game):
     # get the Os move
     #our_move = generate_move(game.BOARD_STATE.copy())
-    generate_move(game)
+    our_move = generate_move(game)
+    
     #BOARD_STATE.update(our_move)
     # sleep?
     #print_board(game.BOARD_STATE)        
     os_list = game.get_Os() 
-
+    game.check_win(os_list)
 
 
 
