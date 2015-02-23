@@ -30,15 +30,6 @@ def main():
             Os_move(game)
             Xs_move(game)
     
-    print(game.WINNER + " won! Do you want to play again? y/n\n")
-    char = getch() 
-    if char.lower()=='y':
-        main()
-    elif char.lower()=='n':
-        sys.exit(0)
-
-
-
 
 
 def Xs_move(game):
@@ -48,7 +39,7 @@ def Xs_move(game):
     print_board(game.BOARD_STATE)
     # get Xs
     xs_list = game.get_Xs() 
-    game.check_win(xs_list)
+    game.did_anyone_win(xs_list)
   
 
 def Os_move(game):
@@ -60,7 +51,7 @@ def Os_move(game):
     # sleep?
     #print_board(game.BOARD_STATE)        
     os_list = game.get_Os() 
-    game.check_win(os_list)
+    game.did_anyone_win(os_list)
 
 
 

@@ -3,6 +3,16 @@
 from get_move import winning_combinations
 
 
+# final
+# fatal
+# open
+# random
+
+# final move - you win
+# fatal move - you prevent yourself from losing, prevent a fatal move
+# open - find an open square, where a row is possible
+# random - random 
+
 
 class Decision():
     
