@@ -1,3 +1,4 @@
+import sys
 
 # Numbers to Alphabet and Alphabet to Numbers
 NUM_ALPHA = {'1':'a','2':'b','3':'c','4':'d','5':'e','6':'f','7':'g','8':'h','9':'i'}
@@ -14,10 +15,13 @@ winning_combinations = [
 
 
 
-def decode_move(some_string):
-    if some_string.isdigit() and 10 > int(some_string) > 0:
+def decode_move(some_string, X_or_O):
+    # Convert '1' to {'a':'X'} or {'a':'O'} to update BOARD_STATE 
+    if some_string=='q':
+        sys.exit(0)
+    elif some_string.isdigit() and 10 > int(some_string) > 0:
         alpha = NUM_ALPHA.get(some_string)
-        return {alpha:'X'}
+        return {alpha: X_or_O}
     else:
         return {}
 
@@ -34,9 +38,9 @@ class Game():
         self.Xs = []
         self.Os = []
 
-    def did_anyone_win(self,Xs=[],Os=[]):
-        self.X_WIN_STATE    = check_winning(Xs)
-        self.O_WIN_STATE    = check_winning(Os)
+    def did_anyone_win(self):
+        self.X_WIN_STATE    = check_winning(self.get_Xs())
+        self.O_WIN_STATE    = check_winning(self.get_Os())
         self.WIN_STATE      = self.O_WIN_STATE or self.X_WIN_STATE
 
         if self.O_WIN_STATE:
@@ -64,14 +68,6 @@ class Game():
 
 
 
-
-
-def decode_move(some_string):
-    if some_string.isdigit() and 10 > int(some_string) > 0:
-        alpha = NUM_ALPHA.get(some_string)
-        return {alpha:'X'}
-    else:
-        return {}
 
 
 
