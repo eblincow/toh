@@ -19,12 +19,13 @@ class Decision():
     
     def __init__(self, game):
         self.game = game
-        self.X_almost_matches = self._find_almost_matches(game.get_Xs())
-        self.O_almost_matches = self._find_almost_matches(game.get_Os()) 
+        self.Xs = game.get_Xs()
+        self.Os = game.get_Os()
 
-        #An almost match on O implies a final square 
+
+        # A dangeorus square for O implies a winning square
         self.winning_square = self.find_winning_square() # final O square
-        #An almost match on X implies a fatal square 
+        # A dangerous square for X implies a fatal square
         self.fatal_square = self.find_fatal_square() # fatal X square 
         # fallback if none are final or fatal 
         self.open_square = self.find_open_square() # an open O square 
@@ -42,50 +43,33 @@ class Decision():
 
 
     
-    
-    def _find_almost_matches(self,Xs_or_Os):
-        almost_matches= [] 
-        
+    def _find_dangerous_square(self,Xs_or_Os):
+        # receives e.g. [1,2] and returns 3
+        # finds a dangerous square - e.g. square leading to a win
+        print("hello, im in here nowj")
         for combination in winning_combinations:
             # Get overlap between X/O values and each combination 
             check_overlap = [x for x in set(combination) if str(x) in set(Xs_or_Os)]
-            # If we get an overlap of 2, theres a dangerous square!!
+            # If we get an overlap of 2, and the third square isn't occupied
+            # theres a dangerous square!!
+            print("check overlap= " + repr(check_overlap))
             if len(check_overlap) == 2:
-                almost_matches.append(check_overlap)
-        print("Almost matches = " + repr(almost_matches))
-        return almost_matches
-
-
-    def _find_final_square(self, almost_matches):
-        # This function returns the final square necessary for a row of three
-
-
-        final_square = None
-        final_squares = []
-
-        for almost_match in almost_matches:
-
-            for combination in winning_combinations:
-                # find the combination which it overlaps
-                if len(set(combination).intersection(almost_match))==2:
-                    combo = combination[:] # make a copy of combination
-                    for square in almost_match:
-                       combo.remove(square) # find the last unselected square 
-                    final_squares.append(combo[0]) 
-        for final in final_squares:
-            if check_square_availability(self.game, final):
-                final_square = final
-        return final_square
+                # now we should go all the way and find the dangerous square
+                # and check if its open, if so return it
+                final_square = [x for x in combination if x not in check_overlap][0]
+                check = check_square_availability(self.game,final_square)
+                if check:
+                    return final_square
 
 
     def find_winning_square(self):
-        winning_square = self._find_final_square(almost_matches=self.O_almost_matches)
+        winning_square = self._find_dangerous_square(self.Os)
         return winning_square 
     
     def find_fatal_square(self):
         # call find_final_square but with Xs (user's squares) as input
         # finds the squares you need to fill to prevent user from winning
-        fatal_square = self._find_final_square(almost_matches=self.X_almost_matches) 
+        fatal_square = self._find_dangerous_square(self.Xs)
         return fatal_square 
         
         

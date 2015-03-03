@@ -9,9 +9,9 @@ BOARD_START = { 'a': '_', 'b':'_', 'c':'_', 'd':'_', 'e':'_', 'f':'_', 'g':'_', 
 
 
 winning_combinations = [
-        [1,2,3],[4,5,6],[7,8,9],
-        [1,4,7],[2,5,8],[3,6,9],
-        [1,5,9],[3,5,7]
+        ['1','2','3'],['4','5','6'],['7','8','9'],
+        ['1','4','7'],['2','5','8'],['3','6','9'],
+        ['1','5','9'],['3','5','7']
         ]
 
 
@@ -31,9 +31,7 @@ def check_square_availability(game, square):
 def check_winning(Xs_or_Os):
     # Check overlap with winning combinations for Os or Xs
     # return True if its a winning combination
-    if type(Xs_or_Os) != list:
-        raise Exception('An error occured!')
-    elif len(Xs_or_Os) < 3:
+    if len(Xs_or_Os) < 3:
         return False
     else:
         for combination in winning_combinations:
@@ -73,8 +71,6 @@ class Game():
         self.O_WIN_STATE = False
         self.WINNER = None
         self.BOARD_STATE = BOARD_START
-        self.Xs = []
-        self.Os = []
 
 
     def print_board(self):
@@ -98,18 +94,20 @@ class Game():
 
     def get_Xs(self):
         # Get list of X values: '1','2'
+        Xs = []
         for key,value in self.BOARD_STATE.items(): #e.g. 'a','X'
             if value=='X':
-                self.Xs.append(ALPHA_NUM[key]) # e.g. '1'
-        return self.Xs
+                Xs.append(ALPHA_NUM[key]) # e.g. '1'
+        return Xs
 
 
     def get_Os(self):
         # Get list of O values: '1','2'
+        Os = []
         for key, value in self.BOARD_STATE.items():
             if value=='O':
-                self.Os.append(ALPHA_NUM[key])
-        return self.Os
+                Os.append(ALPHA_NUM[key])
+        return Os
 
 
 

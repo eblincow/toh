@@ -18,16 +18,18 @@ def main():
 
     game = Game() # Basically just a container for the game state vars
     os.system('clear')
+    game.print_board()
 
     # Main loop 
     while game.WIN_STATE == False:
-        game.print_board()
         if COMPUTER_START:
             Xs_move(game)
+            game.print_board()
             Os_move(game)
             game.print_board()
         elif not COMPUTER_START:
             Os_move(game)
+            game.print_board()
             Xs_move(game)
             game.print_board()
     os.system('clear')
