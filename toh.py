@@ -23,8 +23,10 @@ def main():
     # Main loop 
     while game.WIN_STATE == False:
         if COMPUTER_START:
+            print("Xs move")
             Xs_move(game)
             game.print_board()
+            print("Os move")
             Os_move(game)
             game.print_board()
         elif not COMPUTER_START:
@@ -32,19 +34,29 @@ def main():
             game.print_board()
             Xs_move(game)
             game.print_board()
-    os.system('clear')
-    main()
-    
+        # no open spaces, game is finished
+        if (list(game.BOARD_STATE.values()).count('_') <= 1):
+            print("Its a draw!")
+            break
+
+    if game.WINNER:
+        print("{winner} won!".format(winner=game.WINNER))
+    another_game = input("Play again? y/n")
+    if another_game in ('n','q'):
+        sys.exit(0) # quit
+    else:
+        main() # play again
+
 
 def Xs_move(game):
     # get the Xs move
     # move = decode_move(getch(),"X", game)
     # temporary !
-    move = None
-    while not move:
-      move = decode_move(input(),"X",game)
-    print(move)
-    game.BOARD_STATE.update(move)
+    move = decode_move(input(),"X",game)
+    if move:
+        game.BOARD_STATE.update(move)
+    else:
+        Xs_move(game)
     # get Xs
     game.did_anyone_win()  
 

@@ -70,7 +70,7 @@ class Game():
         self.X_WIN_STATE = False
         self.O_WIN_STATE = False
         self.WINNER = None
-        self.BOARD_STATE = BOARD_START
+        self.BOARD_STATE = BOARD_START.copy()
 
 
     def print_board(self):
@@ -81,15 +81,16 @@ class Game():
         return board
 
     def did_anyone_win(self):
-        print("did anyone win?")
         self.X_WIN_STATE    = check_winning(self.get_Xs())
         self.O_WIN_STATE    = check_winning(self.get_Os())
         self.WIN_STATE      = self.O_WIN_STATE or self.X_WIN_STATE
 
         if self.O_WIN_STATE:
             self.WINNER = 'The machine'
+            self.WIN_STATE = True
         elif self.X_WIN_STATE:
             self.WINNER = 'You'
+            self.WIN_STATE = True
 
 
     def get_Xs(self):

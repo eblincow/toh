@@ -22,7 +22,6 @@ class Decision():
         self.Xs = game.get_Xs()
         self.Os = game.get_Os()
 
-
         # A dangeorus square for O implies a winning square
         self.winning_square = self.find_winning_square() # final O square
         # A dangerous square for X implies a fatal square
@@ -31,6 +30,7 @@ class Decision():
         self.open_square = self.find_open_square() # an open O square 
         # the final output move, e.g. '1'
         self.move = decode_move(self.decide(),"O",game)
+
 
     def decide(self):
         if self.winning_square:
@@ -52,7 +52,6 @@ class Decision():
             check_overlap = [x for x in set(combination) if str(x) in set(Xs_or_Os)]
             # If we get an overlap of 2, and the third square isn't occupied
             # theres a dangerous square!!
-            print("check overlap= " + repr(check_overlap))
             if len(check_overlap) == 2:
                 # now we should go all the way and find the dangerous square
                 # and check if its open, if so return it
