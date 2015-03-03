@@ -80,9 +80,14 @@ class Game():
         print(PROMPT)
         return board
 
-    def did_anyone_win(self):
-        self.X_WIN_STATE    = check_winning(self.get_Xs())
-        self.O_WIN_STATE    = check_winning(self.get_Os())
+    def did_anyone_win(self, X_or_O):
+        if X_or_O == "X":
+            self.X_WIN_STATE    = check_winning(self.get_Xs())
+
+
+        if X_or_O == "O":
+            self.O_WIN_STATE    = check_winning(self.get_Os())
+
         self.WIN_STATE      = self.O_WIN_STATE or self.X_WIN_STATE
 
         if self.O_WIN_STATE:

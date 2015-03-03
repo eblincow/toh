@@ -6,10 +6,13 @@ import sys, os
 from game import Game, decode_move # remembers game state
 from getch import getch # used for immediate keyboard input(no enter key)
 from decision import Decision
+import time
 
+
+COMPUTER_START = True
+
+# TEMPORARY REMOVE ME JUST DEBUGGING
 COMPUTER_START = False
-
-
 
 def main():
     global COMPUTER_START
@@ -22,26 +25,30 @@ def main():
 
     # Main loop 
     while game.WIN_STATE == False:
-        if COMPUTER_START:
-            print("Xs move")
+        if not COMPUTER_START:
             Xs_move(game)
             game.print_board()
-            print("Os move")
+            if not game.WIN_STATE:
+                Os_move(game)
+                game.print_board()
+        elif COMPUTER_START:
             Os_move(game)
             game.print_board()
-        elif not COMPUTER_START:
-            Os_move(game)
-            game.print_board()
-            Xs_move(game)
-            game.print_board()
+            #### BUG BUG BUG ####
+            ### when Os_move wins, it declares game.WIN_STATE
+            # but that doesnt get checked until the next run of this while loop
+            # so we get another move by Xs_move
+            if not game.WIN_STATE:
+                Xs_move(game)
+                game.print_board()
         # no open spaces, game is finished
-        if (list(game.BOARD_STATE.values()).count('_') <= 1):
+        if (list(game.BOARD_STATE.values()).count('_') == 0):
             print("Its a draw!")
             break
 
     if game.WINNER:
         print("{winner} won!".format(winner=game.WINNER))
-    another_game = input("Play again? y/n")
+    another_game = input("Play again? y/n\n")
     if another_game in ('n','q'):
         sys.exit(0) # quit
     else:
@@ -50,6 +57,8 @@ def main():
 
 def Xs_move(game):
     # get the Xs move
+    # True = somebody won
+    # False = nobody won
     # move = decode_move(getch(),"X", game)
     # temporary !
     move = decode_move(input(),"X",game)
@@ -58,17 +67,24 @@ def Xs_move(game):
     else:
         Xs_move(game)
     # get Xs
-    game.did_anyone_win()  
+    decision = Decision(game)
+    if len(decision.Xs) > 2:
+        game.did_anyone_win("X")
 
 def Os_move(game):
     # get the Os move
-    our_move = Decision(game).move
+    # True = somebody won
+    decision = Decision(game)
+    our_move = decision.move
 
     print("Our move = " + repr(our_move))
     game.BOARD_STATE.update(our_move)
     # sleep?
-    #print_board(game.BOARD_STATE)        
-    game.did_anyone_win()
+    time.sleep(1)
+    decision.update() # refresh X and Os after move
+    if len(decision.Os) > 2:
+        print(decision.Os)
+        game.did_anyone_win("O")
 
 
 

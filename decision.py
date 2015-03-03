@@ -41,12 +41,14 @@ class Decision():
             return self.open_square
 
 
+    def update(self):
+        self.Xs = self.game.get_Xs()
+        self.Os = self.game.get_Os()
 
-    
+
     def _find_dangerous_square(self,Xs_or_Os):
         # receives e.g. [1,2] and returns 3
         # finds a dangerous square - e.g. square leading to a win
-        print("hello, im in here nowj")
         for combination in winning_combinations:
             # Get overlap between X/O values and each combination 
             check_overlap = [x for x in set(combination) if str(x) in set(Xs_or_Os)]

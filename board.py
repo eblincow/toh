@@ -2,7 +2,7 @@ import os
 
 PROMPT = "\nEnter a square: "
 
-BOARD = """\n\n        TIC_TAC_TOE\n\n
+BOARD = """\n\n        TIC TAC TOE\n\n
 
      _{a}_   _{b}_   _{c}_                    | 1 2 3 |\
      \n                                        | 4 5 6 |  
