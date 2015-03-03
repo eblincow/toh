@@ -1,7 +1,6 @@
 
 from board import *
-from get_move import *
-from decision_move import *
+from decision import *
 from game import *
 import unittest
 

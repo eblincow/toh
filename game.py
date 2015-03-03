@@ -1,8 +1,11 @@
 import sys
+from board import BOARD, PROMPT
 
 # Numbers to Alphabet and Alphabet to Numbers
 NUM_ALPHA = {'1':'a','2':'b','3':'c','4':'d','5':'e','6':'f','7':'g','8':'h','9':'i'}
 ALPHA_NUM = dict(zip(NUM_ALPHA.values(),NUM_ALPHA.keys()))
+
+BOARD_START = { 'a': '_', 'b':'_', 'c':'_', 'd':'_', 'e':'_', 'f':'_', 'g':'_', 'h':'_', 'i':'_' }
 
 
 winning_combinations = [
@@ -15,15 +18,50 @@ winning_combinations = [
 
 
 
-def decode_move(some_string, X_or_O):
+
+def check_square_availability(game, square):
+    # receive '1' check available, return True/False
+    convert = NUM_ALPHA.get(square)
+    if game.BOARD_STATE.get(convert) == "_":
+        return True # Its open!
+    else:
+        return False
+
+
+def check_winning(Xs_or_Os):
+    # Check overlap with winning combinations for Os or Xs
+    # return True if its a winning combination
+    if type(Xs_or_Os) != list:
+        raise Exception('An error occured!')
+    elif len(Xs_or_Os) < 3:
+        return False
+    else:
+        for combination in winning_combinations:
+            # Get overlap between X/O values and each combination
+            check_overlap = [x for x in set(combination) if str(x) in set(Xs_or_Os)]
+            # If we get an overlap of 3, someone has won!!
+            if len(check_overlap) == 3:
+                return True
+    return False
+
+
+def decode_move(some_string, X_or_O, game):
     # Convert '1' to {'a':'X'} or {'a':'O'} to update BOARD_STATE 
     if some_string=='q':
         sys.exit(0)
     elif some_string.isdigit() and 10 > int(some_string) > 0:
-        alpha = NUM_ALPHA.get(some_string)
-        return {alpha: X_or_O}
+        availability = check_square_availability(game, some_string)
+        if availability:
+            alpha = NUM_ALPHA.get(some_string)
+            return {alpha: X_or_O}
     else:
         return {}
+
+
+
+
+
+
 
 
 
@@ -34,11 +72,20 @@ class Game():
         self.X_WIN_STATE = False
         self.O_WIN_STATE = False
         self.WINNER = None
-        self.BOARD_STATE = {} 
+        self.BOARD_STATE = BOARD_START
         self.Xs = []
         self.Os = []
 
+
+    def print_board(self):
+        #os.system('clear')
+        board = BOARD.format(**self.BOARD_STATE)
+        print(board)
+        print(PROMPT)
+        return board
+
     def did_anyone_win(self):
+        print("did anyone win?")
         self.X_WIN_STATE    = check_winning(self.get_Xs())
         self.O_WIN_STATE    = check_winning(self.get_Os())
         self.WIN_STATE      = self.O_WIN_STATE or self.X_WIN_STATE
@@ -64,27 +111,7 @@ class Game():
                 self.Os.append(ALPHA_NUM[key])
         return self.Os
 
-   
 
 
-
-
-
-
-def check_winning(Xs_or_Os):
-    # Check overlap with winning combinations for Os or Xs
-    # return True if its a winning combination
-    if type(Xs_or_Os) != list:
-        raise Exception('An error occured!')
-    elif len(Xs_or_Os) < 3:
-        return False
-    else:
-        for combination in winning_combinations:
-            # Get overlap between X/O values and each combination 
-            check_overlap = [x for x in set(combination) if str(x) in set(Xs_or_Os)]
-            # If we get an overlap of 3, someone has won!!
-            if len(check_overlap) == 3:
-                return True 
-    return False
 
 

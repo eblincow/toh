@@ -14,17 +14,8 @@ BOARD = """\n\n        TIC_TAC_TOE\n\n
      \n                                       [q to quit]\n             """
 
 
-DEFAULT_LAYOUT = { 'a': '_', 'b':'_', 'c':'_', 'd':'_', 'e':'_', 'f':'_', 'g':'_', 'h':'_', 'i':'_' }
 
-def print_board(board_dict=DEFAULT_LAYOUT.copy()):
-    new_board = DEFAULT_LAYOUT.copy()
-    new_board.update(board_dict)
-    # uncomment
-    #os.system('clear')
-    board = BOARD.format(**new_board)
-    print(board)
-    print(PROMPT)
-    return new_board
+
 
 
 

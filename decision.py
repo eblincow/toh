@@ -1,6 +1,5 @@
 # determine which next move is best
-from game import decode_move, winning_combinations, NUM_ALPHA
-
+from game import decode_move, winning_combinations, check_square_availability
 import random
 
 
@@ -20,9 +19,9 @@ class Decision():
     
     def __init__(self, game):
         self.game = game
-        self.X_almost_matches = self._find_almost_matches(game.get_Xs()) 
+        self.X_almost_matches = self._find_almost_matches(game.get_Xs())
         self.O_almost_matches = self._find_almost_matches(game.get_Os()) 
-        
+
         #An almost match on O implies a final square 
         self.winning_square = self.find_winning_square() # final O square
         #An almost match on X implies a fatal square 
@@ -30,7 +29,7 @@ class Decision():
         # fallback if none are final or fatal 
         self.open_square = self.find_open_square() # an open O square 
         # the final output move, e.g. '1'
-        self.move = decode_move(self.decide(),"O")
+        self.move = decode_move(self.decide(),"O",game)
 
     def decide(self):
         if self.winning_square:
@@ -41,12 +40,7 @@ class Decision():
             return self.open_square
 
 
-    def check_square_availability(self,square):
-        convert = NUM_ALPHA.get(square)  
-        if self.game.BOARD_STATE.get(convert) == "_":
-            return True # Its open!
-        else:
-            return False
+
     
     
     def _find_almost_matches(self,Xs_or_Os):
@@ -78,11 +72,9 @@ class Decision():
                     for square in almost_match:
                        combo.remove(square) # find the last unselected square 
                     final_squares.append(combo[0]) 
-        print(repr(final_squares)) 
         for final in final_squares:
-            if self.check_square_availability(final):
+            if check_square_availability(self.game, final):
                 final_square = final
-        print("Final square seems to be = " + repr(final_square))
         return final_square
 
 
@@ -99,8 +91,12 @@ class Decision():
         
 
     def find_open_square(self):
-        return '1'
-
+        open_square = None
+        while not open_square:
+            new_try = str(random.randint(0,9))
+            open_square = check_square_availability(self.game, new_try)
+        # optimize later to check for 'two open' because otherwise dumb
+        return new_try
 
 
 
