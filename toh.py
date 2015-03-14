@@ -56,7 +56,7 @@ def Xs_move(game):
     # get the Xs move
     # move = decode_move(getch(),"X", game)
     # temporary !
-    move = decode_move(input(),"X",game)
+    move = decode_move(getch(),"X",game)
     if move:
         game.BOARD_STATE.update(move)
     else:

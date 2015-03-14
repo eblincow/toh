@@ -96,6 +96,7 @@ class Game():
         elif self.X_WIN_STATE:
             self.WINNER = 'You'
             self.WIN_STATE = True
+        return self.WIN_STATE
 
 
     def get_Xs(self):

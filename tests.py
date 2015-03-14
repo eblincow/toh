@@ -18,18 +18,23 @@ class TestBoard(unittest.TestCase):
         pass
                         
     def test_print_board(self):
-        self.assertEqual(print_board(),{'c': '_', 'b': '_', 'i': '_', 'e': '_', 'g': '_', 'd': '_', 'f': '_', 'a': '_', 'h': '_'})
-        self.assertEqual(print_board(start),{'c': 'X', 'b': 'O', 'i': '_', 'e': '_', 'g': '_', 'd': '_', 'f': '_', 'a': 'X', 'h': '_'})
-        self.assertEqual(print_board(Xwin),{'c': 'X', 'b': 'X', 'i': '_', 'e': '_', 'g': '_', 'd': '_', 'f': '_', 'a': 'X', 'h': '_'})
-        self.assertEqual(print_board(Owin),{'c': 'O', 'b': 'O', 'i': '_', 'e': '_', 'g': '_', 'd': '_', 'f': '_', 'a': 'O', 'h': '_'})
+        game = Game()
+        self.assertEqual(game.print_board().count("X"), 1)
+        game.BOARD_STATE = start
+        self.assertEqual(game.print_board().count("X"), 2)
+        game.BOARD_STATE = Xwin
+        self.assertEqual(game.print_board().count("X"), 3)
+        game.BOARD_STATE = Owin
+        self.assertEqual(game.print_board().count("O"), 3)
 
 
     def test_decode_move(self):
-        self.assertEqual(decode_move("1"),{'a':'X'})
-        self.assertEqual(decode_move("5"),{'e':'X'})
-        self.assertEqual(decode_move("9"),{'i':'X'})
-        self.assertEqual(decode_move("text"),{})
-        self.assertEqual(decode_move("15"),{})
+        g1 = Game()
+        self.assertEqual(decode_move("1", "X", g1), {'a':'X'})
+        self.assertEqual(decode_move("5", "X", g1), {'e':'X'})
+        self.assertEqual(decode_move("9", "X", g1), {'i':'X'})
+        self.assertEqual(decode_move("text",[],g1), {})
+        self.assertEqual(decode_move("15",[],g1), {})
 
     def test_Xs_and_Os(self):
 
@@ -59,23 +64,42 @@ class TestBoard(unittest.TestCase):
         non_winning_combinations = [['1','2','5'],['1','3','9'],['1','1','1'],['0','22','33'],['-1','-2','3'],['4','5'],['5','6','1']]
         winning_combinations = [['1','2','3'],['1','5','9'],['8','5','2']]
         for non_winner in non_winning_combinations:
-            self.assertFalse(check_overlap(non_winner), "check_overlap should return False for non winners")
+            self.assertFalse(check_winning(non_winner), "check_overlap should return False for non winners")
             
         for winner in winning_combinations:
-            self.assertTrue(check_overlap(winner))
-            self.assertTrue(type(check_overlap(winner)==list))
+            self.assertTrue(check_winning(winner))
+            self.assertTrue(type(check_winning(winner)==list))
 
 
-    def test_check_win(self):
-        pass
+    def test_find_dangerous_squares(self):
+        game = Game()
+        decision = Decision(game)
+        self.assertEqual(decision._find_dangerous_square(['1','2']), '3')
+        self.assertEqual(decision._find_dangerous_square(['2','3']), '1')
+        self.assertEqual(decision._find_dangerous_square(['1','9']), '5')
+        self.assertEqual(decision._find_dangerous_square(['3','9']), '6')
+        # No dangerous square
+        self.assertEqual(decision._find_dangerous_square(['2','9']), None)
+
 
     def test_find_almost_matches(self):
         #self.assertEqual(find_almost_matches(['1','2']),[[1,2]])
         #self.assertEqual(find_almost_matches(['1']),[])
-        pass
+        self.assertEqual()
 
+    def test_did_anyone_win(self):
+        g = Game()
+        g.BOARD_STATE = {'a':'X','b':'X','c':'X'}
+        self.assertEqual(g.did_anyone_win("X"),True)
 
+        g = Game()
+        g.BOARD_STATE = {'a':'O','d':'O','g':'O'}
+        self.assertEqual(g.did_anyone_win("O"),True)
 
+        g = Game()
+        g.BOARD_STATE = {'a':'O','d':'X','g':'O'}
+        self.assertEqual(g.did_anyone_win("O"),False)
+        self.assertEqual(g.did_anyone_win("X"),False)
 
 
 if __name__ == '__main__':

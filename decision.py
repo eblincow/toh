@@ -73,7 +73,6 @@ class Decision():
         fatal_square = self._find_dangerous_square(self.Xs)
         return fatal_square 
         
-        
 
     def find_open_square(self):
         open_square = None
