@@ -1,5 +1,3 @@
-import os
-
 PROMPT = "\nEnter a square: "
 
 BOARD = """\n\n        TIC TAC TOE\n\n
